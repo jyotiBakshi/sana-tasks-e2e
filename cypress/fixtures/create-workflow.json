@@ -1,0 +1,19 @@
+{
+  "name": "Daily dinner recipe inspiration",
+  "description": "A workflow for Daily dinner recipe inspiration",
+  "trigger": {
+    "frequency": "daily on weekdays",
+    "time": "18:00",
+    "displayTime": "6:00pm"
+  },
+  "steps": {
+    "step1": "Ask user for dinner preferences",
+    "step2": "Instructions for AI agent. You are helping plan a simple daily dinner. Use the user's answers to suggest 2–3 dinner recipes. Consider user inputs given in step 1 like Time available, Protein, Must use ingredient, Dietary rules. Requirements: Output exactly 2–3 recipe suggestions. For each, give: Recipe name, One-sentence description, Estimated total time. Keep everything short and scannable."
+  },
+  "inputs": [
+    "Time available (in minutes)",
+    "Protein(Chicken/Eggs/Fish etc.)",
+    "Must use ingredients (if any)",
+    "Dietary rules(None/Vegan etc.)"
+  ]
+}
