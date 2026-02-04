@@ -60,6 +60,7 @@ Prettier ensures readable, maintainable code across the team with consistent for
 
 ## Project Structure
 
+```text
 cypress/
   e2e/                         # Test files
     CreateWorkflow.cy.ts       # Workflow creation tests
@@ -76,7 +77,7 @@ cypress/
         dialog.ts              # Dialog/modal interactions
         findByRole.ts          # ARIA role-based queries
         findByText.ts          # Text-based queries
-        input.ts               # Input field interactions
+        inputs.ts              # Input field interactions
         link.ts                # Link interactions
         menu.ts                # Menu item selection
         menuButton.ts          # Three-dot menu interactions
@@ -93,4 +94,5 @@ cypress/
 
 cypress.config.ts              # Cypress configuration
 tsconfig.json                  # TypeScript configuration
+```
 
