@@ -4,8 +4,8 @@ UI test automation for Sana.ai workflow management using Cypress and TypeScript.
 
 ## Quick Start
 
-npm install
-npx cypress open
+- npm install
+- npx cypress open
 
 ## Prerequisites
 
@@ -61,30 +61,36 @@ Prettier ensures readable, maintainable code across the team with consistent for
 ## Project Structure
 
 cypress/
-├── e2e/                          # Test files
-│   ├── CreateWorkflow.cy.ts      # Workflow creation tests
-│   └── EditWorkflow.cy.ts        # Workflow editing tests
-├── fixtures/                     # Test data (JSON format)
-│   ├── create-workflow.json      # Data for creation tests
-│   └── edit-workflow.json        # Data for editing tests
-├── support/
-│   ├── functions/
-│   │   └── generics/             # Reusable helper functions
-│   │       ├── button.ts         # Button interactions
-│   │       ├── dialog.ts         # Dialog/modal interactions
-│   │       ├── findByRole.ts     # ARIA role-based queries
-│   │       ├── findByText.ts     # Text-based queries
-│   │       ├── input.ts          # Input field interactions
-│   │       ├── link.ts           # Link interactions
-│   │       ├── menu.ts           # Menu item selection
-│   │       ├── menuButton.ts     # Three-dot menu interactions
-│   │       ├── placeholder.ts    # Placeholder text interactions
-│   │       ├── section.ts        # Section/container scoping
-│   │       ├── switch.ts         # Toggle switch interactions
-│   │       └── contenteditable.ts # Contenteditable element handling
-│   ├── types/
-│   │   └── workflow.types.ts     # TypeScript interfaces
-│   ├── commands.ts               # Custom Cypress commands
-│   └── e2e.ts                    # Global configuration & error handling
-├── cypress.config.ts             # Cypress configuration
-└── tsconfig.json                 # TypeScript configuration
+  e2e/                         # Test files
+    CreateWorkflow.cy.ts       # Workflow creation tests
+    EditWorkflow.cy.ts         # Workflow editing tests
+
+  fixtures/                    # Test data (JSON format)
+    create-workflow.json       # Data for creation tests
+    edit-workflow.json         # Data for editing tests
+
+  support/
+    functions/
+      generics/                # Reusable helper functions
+        button.ts              # Button interactions
+        dialog.ts              # Dialog/modal interactions
+        findByRole.ts          # ARIA role-based queries
+        findByText.ts          # Text-based queries
+        input.ts               # Input field interactions
+        link.ts                # Link interactions
+        menu.ts                # Menu item selection
+        menuButton.ts          # Three-dot menu interactions
+        placeholder.ts         # Placeholder text interactions
+        section.ts             # Section/container scoping
+        switch.ts              # Toggle switch interactions
+        contenteditable.ts     # Contenteditable element handling
+
+    types/
+      workflow.types.ts        # TypeScript interfaces
+
+    commands.ts                # Custom Cypress commands
+    e2e.ts                     # Global configuration & error handling
+
+cypress.config.ts              # Cypress configuration
+tsconfig.json                  # TypeScript configuration
+
