@@ -1,4 +1,8 @@
-export function typeIntoPlaceholder(placeholder: string | RegExp, text: string, pressEnter = false) {
+export function typeIntoPlaceholder(
+  placeholder: string | RegExp,
+  text: string,
+  pressEnter = false
+) {
   const input = cy.findByPlaceholderText(placeholder)
   input.clear().type(text)
   if (pressEnter) {
@@ -12,10 +16,6 @@ export function typeIntoDataPlaceholder(placeholder: string, text: string) {
 
 export function clearAndType(selector: string, text: string, options?: { timeout?: number }) {
   cy.get(selector, options).clear().type(text)
-}
-
-export function typeIntoTextarea(placeholder: string, text: string, options?: { timeout?: number }) {
-  cy.get(`textarea[placeholder="${placeholder}"]`, options).should('be.visible').clear().type(text)
 }
 
 export function clearAndTypeInTestId(testId: string, text: string) {

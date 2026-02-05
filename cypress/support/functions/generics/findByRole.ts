@@ -1,16 +1,19 @@
-export function find(role: string, options?: { name?: string | RegExp, timeout?: number }) {
+export function find(role: string, options?: { name?: string | RegExp; timeout?: number }) {
   return cy.findByRole(role, options)
 }
 
-export function click(role: string, options?: { name?: string | RegExp, timeout?: number }) {
+export function click(role: string, options?: { name?: string | RegExp; timeout?: number }) {
   cy.findByRole(role, options).click()
 }
 
-export function clickFirst(role: string, options?: { name?: string | RegExp, timeout?: number }) {
+export function clickFirst(role: string, options?: { name?: string | RegExp; timeout?: number }) {
   cy.findAllByRole(role, options).first().click()
 }
 
-export function verifyVisible(role: string, options?: { name?: string | RegExp, timeout?: number }) {
+export function verifyVisible(
+  role: string,
+  options?: { name?: string | RegExp; timeout?: number }
+) {
   cy.findByRole(role, options).should('be.visible')
 }
 

@@ -23,8 +23,11 @@ npx cypress open
 ## Authentication
 
 **Current approach:**
-- 30-second manual wait for Gmail OTP authentication
+
+- Manual Gmail OTP authentication (user-driven)
+- Test waits up to 30 seconds for the blocking dialog to appear, then closes it
 - Login email: jyoti.bakshy@gmail.com
+- The logic lives in `gotoWorkflows()` in `cypress/support/flows/workflows.ts`.
 
 ## Test Approach
 
@@ -37,7 +40,7 @@ Catches UI bugs when text casing changes unexpectedly. Uses exact strings for pr
 Locators based on how users interact - roles, accessible names, text, and placeholders. Ensures tests work the way real users experience the app.
 
 **3. Fixture-based data-driven testing**  
-JSON format enables extensive testing by modifying data (multiple steps, inputs) without changing test code. Scales easily for comprehensive coverage.
+JSON format enables extensive testing by modifying data (multiple steps, inputs) without changing test code.
 
 ### Code Organization
 
@@ -45,7 +48,7 @@ JSON format enables extensive testing by modifying data (multiple steps, inputs)
 Different element types (buttons, inputs, dialogs, menus, contenteditable) abstracted into modular functions for reusability and cleanliness.
 
 **5. TypeScript type safety**  
-`WorkflowData` and `WorkflowEditData` interfaces prevent data structure errors and provide autocomplete for better developer experience.
+`WorkflowData` and `WorkflowEditData` interfaces prevent data structure errors and provide autocomplete for better coding experience.
 
 **6. Separation of concerns**  
 Test logic separated from element interaction logic. Changing locator strategy doesn't require updating all tests.
@@ -57,6 +60,11 @@ Test logic separated from element interaction logic. Changing locator strategy d
 
 **8. Consistent code style**  
 Prettier ensures readable, maintainable code across the team with consistent formatting rules.
+
+Useful commands:
+
+- npm run format
+- npm run format:check
 
 ## Project Structure
 
@@ -71,13 +79,16 @@ cypress/
     edit-workflow.json         # Data for editing tests
 
   support/
+    flows/
+      workflows.ts             # Reusable end-to-end UI flows (keeps specs readable)
+
     functions/
       generics/                # Reusable helper functions
         button.ts              # Button interactions
         dialog.ts              # Dialog/modal interactions
         findByRole.ts          # ARIA role-based queries
         findByText.ts          # Text-based queries
-        inputs.ts              # Input field interactions
+        input.ts               # Input field interactions
         link.ts                # Link interactions
         menu.ts                # Menu item selection
         menuButton.ts          # Three-dot menu interactions
@@ -95,4 +106,3 @@ cypress/
 cypress.config.ts              # Cypress configuration
 tsconfig.json                  # TypeScript configuration
 ```
-

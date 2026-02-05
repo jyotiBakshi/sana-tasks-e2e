@@ -11,10 +11,3 @@ export function verifyDisabled(switchLabel: string | RegExp) {
     .find('[role="switch"]')
     .should('have.attr', 'aria-checked', 'false')
 }
-
-export function toggle(switchLabel: string | RegExp) {
-  cy.findByText(switchLabel)
-    .closest('[role="menuitem"]')
-    .find('[role="switch"]')
-    .click()
-}

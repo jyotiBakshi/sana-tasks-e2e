@@ -1,79 +1,70 @@
-import * as button from '../support/functions/generics/button'
-import * as findByRole from '../support/functions/generics/findByRole'
-import * as findByText from '../support/functions/generics/findByText'
-import * as dialog from '../support/functions/generics/dialog'
-import * as input from '../support/functions/generics/input'
-import * as menu from '../support/functions/generics/menu'
-import * as menuButton from '../support/functions/generics/menuButton'
-import * as contenteditable from '../support/functions/generics/contenteditable'
-import * as section from '../support/functions/generics/section'
+import * as workflowFlows from '../support/flows/workflows'
+import { WorkflowData } from '../support/types/workflow.types'
 import { WorkflowEditData } from '../support/types/workflow.types'
 
 describe('Edit Workflow', () => {
-  const WORKFLOW_URL = 'https://sana.ai/ynFUyevTTc3U/workflows#tasks=%22my-tasks%22'
-  
+  // This test focuses on intent (open → edit → save → verify).
+  // Detailed selectors/clicks live in workflowFlows.
+  const WORKFLOW_PATH = '/workflows#tasks=%22my-tasks%22'
+
   let editData: WorkflowEditData
-  
+  let createData: WorkflowData
+
   before(() => {
+    // Load fixtures for both creating and editing.
+    // Edit test creates a workflow first, then edits it.
+    cy.fixture('create-workflow').then((data) => {
+      createData = data
+    })
+
     cy.fixture('edit-workflow').then((data) => {
       editData = data
     })
   })
-  
+
   beforeEach(() => {
-    cy.visit(WORKFLOW_URL)
-    cy.wait(30000)
-    // WORKAROUND: Manual wait for Gmail OTP authentication
-    // TODO: Automate login process
-    dialog.closeDialog()
-    dialog.waitForDialogToClose()
-    findByRole.click('link', { name: /^workflows$/i })
+    // Navigate to the Workflows page and close any blocking dialog.
+    workflowFlows.gotoWorkflows(WORKFLOW_PATH)
   })
 
   it('should edit existing workflow from daily dinner to weekly meal planner', () => {
-    // Navigate to Browse tab
-    findByRole.click('tab', { name: /browse/i })
-    
-    // Search and open workflow
-    input.typeIntoPlaceholder(/search workflows/i, editData.existing.name, true)
-    findByRole.clickFirst('heading', { name: editData.existing.name })
-    
-    // Open Process editor
-    section.clickButtonInSection('Process', /edit/i)
-    
-    // Update trigger to weekly schedule
-    button.click(/Configure trigger options/i)
-    
-    dialog.withinDialog(() => {
-      button.click(editData.existing.trigger.frequency)
-    })
-    
-    menu.selectMenuItem(new RegExp(editData.updates.trigger.frequency, 'i'))
-    
-    dialog.withinDialog(() => {
-      input.clearAndTypeInTestId('task-timepicker', `${editData.updates.trigger.time}{enter}`)
-      button.click("Confirm")
-    })
-    
-    // Verify trigger updated
-    findByText.verifyVisible(new RegExp(editData.updates.trigger.frequency, 'i'))
-    findByText.verifyVisible(new RegExp(editData.updates.trigger.displayTime, 'i'))
-    
-    // Update Step 2 instructions
-    contenteditable.clearAndType(1, editData.updates.steps.step2)
-    
-    // Save workflow
-    button.click("Save workflow")
-    
-    // Verify Step 2 text updated
-    contenteditable.verifyText(1, editData.updates.steps.step2)
+    const { trigger, steps, inputs } = createData
 
-    // Delete workflow
-    menuButton.clickNearText('Edit info')
-    menu.selectMenuItem('Delete workflow')
-    button.click("Confirm")
+    const workflowName = editData.existing.name
+    const workflowDescription = editData.existing.description
+
+    const existingTriggerFrequency = editData.existing.trigger?.frequency ?? trigger.frequency
+
+    // Create the workflow first so the test does not depend on pre-existing data.
+    workflowFlows.openCreateWorkflowModal()
+    workflowFlows.configureRecurringSchedule(trigger)
+
+    workflowFlows.addStep(steps.step1)
+    workflowFlows.addTextInputs(inputs)
+
+    workflowFlows.addStep(steps.step2)
+    workflowFlows.verifySearchWebEnabledInSources()
+
+    workflowFlows.saveNewWorkflow(workflowName, workflowDescription)
+    workflowFlows.assertWorkflowVisible(workflowName)
+
+    // Now edit the workflow we just created.
+    workflowFlows.openProcessEditor()
+
+    // Update the trigger schedule.
+    workflowFlows.updateTriggerFromExistingFrequency({
+      existingFrequencyLabel: existingTriggerFrequency,
+      newFrequency: editData.updates.trigger.frequency,
+      time: editData.updates.trigger.time,
+      displayTime: editData.updates.trigger.displayTime,
+    })
+
+    // Update step 2 instructions and verify the saved content.
+    workflowFlows.updateStep2Instructions(editData.updates.steps.step2)
+    workflowFlows.saveWorkflow()
+    workflowFlows.assertStep2Instructions(editData.updates.steps.step2)
+
+    // Cleanup after test run.
+    workflowFlows.deleteWorkflow()
   })
-
-
-
 })

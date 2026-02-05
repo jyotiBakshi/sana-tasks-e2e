@@ -23,19 +23,19 @@ import '@testing-library/cypress/add-commands'
 // Ignore uncaught exceptions from third-party scripts and browser rendering issues
 Cypress.on('uncaught:exception', (err) => {
   /* returning false here prevents Cypress from failing the test */
-  
+
   // Ignore ResizeObserver loop errors (benign browser rendering issue)
   const resizeObserverLoopErr = /ResizeObserver loop/
   if (resizeObserverLoopErr.test(err.message)) {
     return false
   }
-  
+
   // Ignore third-party script errors (Intercom, TRPC, etc.)
   const thirdPartyErrors = /(TRPCClientError|not valid JSON)/
   if (thirdPartyErrors.test(err.message)) {
     return false
   }
-  
+
   // Allow other exceptions to fail the test
   return true
 })

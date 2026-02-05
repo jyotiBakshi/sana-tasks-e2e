@@ -1,7 +1,3 @@
-/**
- * Helper functions for interacting with menu buttons (three dots icon)
- */
-
 export function clickNearText(text: string | RegExp) {
   cy.contains(text).parent().find('button[aria-haspopup="menu"]').click()
 }
